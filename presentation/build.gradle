@@ -1,44 +1,55 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.fernandocejas.frodo'
+
+
+frodo {
+    enabled = true
+}
 
 android {
-    def globalConfiguration = rootProject.extensions.getByName("ext")
 
+    def globalConfiguration = rootProject.extensions.getByName("ext")
     compileSdkVersion globalConfiguration.getAt("androidCompileSdkVersion")
     buildToolsVersion globalConfiguration.getAt("androidBuildToolsVersion")
-
     defaultConfig {
         minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
         targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
-
         applicationId globalConfiguration.getAt("androidApplicationId")
         versionCode globalConfiguration.getAt("androidVersionCode")
         versionName globalConfiguration.getAt("androidVersionName")
         testInstrumentationRunner globalConfiguration.getAt("testInstrumentationRunner")
         testApplicationId globalConfiguration.getAt("testApplicationId")
-
-
-        buildTypes {
-            release {
-                minifyEnabled false
-                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            }
-        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 
-    dependencies {
-        def presentationDependencies = rootProject.ext.presentationDependencies
-        def presentationTestDependencies = rootProject.ext.presentationTestDependencies
+}
 
-        compile project(':data')
-        androidTestCompile(presentationTestDependencies.espresso, {
-            exclude group: 'com.android.support', module: 'support-annotations'
-        })
-        compile presentationDependencies.androidSupportAppcompat
-        compile presentationDependencies.androidSupportDesign
+dependencies {
+    def presentationDependencies = rootProject.ext.presentationDependencies
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':domain')
+    compile project(':data')
 
-        apt presentationDependencies.daggerCompiler
-        compile presentationDependencies.dagger
-        provided presentationDependencies.javaxAnnotation
-    }
+
+    compile presentationDependencies.supportAppCompat
+    compile presentationDependencies.design
+    apt presentationDependencies.daggerCompiler
+    compile presentationDependencies.dagger
+    compile presentationDependencies.butterKnife
+    compile presentationDependencies.recyclerView
+    compile presentationDependencies.rxJava
+    compile presentationDependencies.rxAndroid
+    provided presentationDependencies.javaxAnnotation
+    apt presentationDependencies.daggerCompiler
+    compile presentationDependencies.dagger
+
+    androidTestCompile presentationTestDependencies.mockito
+    androidTestCompile presentationTestDependencies.dexmaker
+    androidTestCompile presentationTestDependencies.dexmakerMockito
+    androidTestCompile presentationTestDependencies.espresso
+    androidTestCompile presentationTestDependencies.testingSupportLib
 }
