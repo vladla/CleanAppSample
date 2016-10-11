@@ -1,0 +1,78 @@
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+ext {
+    //Android
+    androidBuildToolsVersion = "24.0.2"
+    androidMinSdkVersion = 17
+    androidTargetSdkVersion = 24
+    androidCompileSdkVersion = 24
+
+    //Libraries
+    daggerVersion = '2.7'
+    androidSupportVersion = '24.2.1'
+    janetVersion = '1.0.4'
+    janetServiceVersion = '1.0.5'
+    janetGsonConvertorVersion = '1.0.1'
+    butterKnifeVersion = '7.0.1'
+    recyclerViewVersion = '21.0.3'
+    rxJavaVersion = '1.0.14'
+    rxAndroidVersion = '1.0.1'
+    javaxAnnotationVersion = '1.0'
+    javaxInjectVersion = '1'
+    gsonVersion = '2.3'
+    okHttpVersion = '2.5.0'
+    androidAnnotationsVersion = '21.0.3'
+
+    //Testing
+    robolectricVersion = '3.0'
+    jUnitVersion = '4.12'
+    assertJVersion = '1.7.1'
+    mockitoVersion = '1.9.5'
+    dexmakerVersion = '1.0'
+    espressoVersion = '2.2.2'
+    testingSupportLibVersion = '0.1'
+
+    presentationDependencies = [
+            daggerCompiler         : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger                 : "com.google.dagger:dagger:${daggerVersion}",
+            javaxAnnotation        : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            androidSupportDesign   : "com.android.support:design:${androidSupportVersion}",
+            androidSupportAppcompat: "com.android.support:appcompat-v7:${androidSupportVersion}",
+    ]
+
+    presentationTestDependencies = [
+            espresso: "com.android.support.test.espresso:espresso-core:${espressoVersion}"
+    ]
+
+    dataDependencies = [
+            daggerCompiler         : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger                 : "com.google.dagger:dagger:${daggerVersion}",
+            javaxAnnotation        : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            okHttp                 : "com.squareup.okhttp:okhttp:${okHttpVersion}",
+            gson                   : "com.google.code.gson:gson:${gsonVersion}",
+            rxJava                 : "io.reactivex:rxjava:${rxJavaVersion}",
+            rxAndroid              : "io.reactivex:rxandroid:${rxAndroidVersion}",
+            javaxInject            : "javax.inject:javax.inject:${javaxInjectVersion}",
+            androidAnnotations     : "com.android.support:support-annotations:${androidAnnotationsVersion}",
+            androidSupportAppcompat: "com.android.support:appcompat-v7:${androidSupportVersion}",
+            janet                  : "com.github.techery:janet:${janetVersion}",
+            janetService           : "com.github.techery.janet-http:service:${janetServiceVersion}",
+            janetServiceCompiler   : "com.github.techery.janet-http:service-compiler:${janetServiceVersion}",
+            janetOkHttp            : "com.github.techery.janet-http:client-okhttp3:${janetServiceVersion}",
+            janetGsonConvertor     : "com.github.techery.janet-converters:gson:${janetGsonConvertorVersion}"
+    ]
+
+    dataTestDependencies = [
+            junit      : "junit:junit:${jUnitVersion}",
+            assertj    : "org.assertj:assertj-core:${assertJVersion}",
+            mockito    : "org.mockito:mockito-core:${mockitoVersion}",
+            robolectric: "org.robolectric:robolectric:${robolectricVersion}",
+    ]
+
+}

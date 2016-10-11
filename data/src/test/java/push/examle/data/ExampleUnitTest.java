@@ -1,4 +1,4 @@
-package com.cleanappsample;
+package push.examle.data;
 
 import org.junit.Test;
 
