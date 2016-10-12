@@ -1,6 +1,7 @@
 allprojects {
   repositories {
     jcenter()
+    maven { url "https://jitpack.io" }
   }
 }
 
@@ -25,6 +26,9 @@ ext {
   designLibraryVersion = '24.2.1'
   supportAppcompatVersion = '24.2.1'
   immutablesVersion = '2.3.2'
+  janetVersion = '1.0.4'
+  janetServiceVersion = '1.0.5'
+  janetGsonConvertorVersion = '1.0.1'
 
   //Testing
   robolectricVersion = '3.0'
@@ -72,15 +76,21 @@ ext {
   ]
 
   dataDependencies = [
-      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
-      dagger:             "com.google.dagger:dagger:${daggerVersion}",
-      okHttp:             "com.squareup.okhttp:okhttp:${okHttpVersion}",
-      gson:               "com.google.code.gson:gson:${gsonVersion}",
-      rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
-      rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
-      javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
-      javaxInject:        "javax.inject:javax.inject:${javaxInjectVersion}",
-      androidAnnotations: "com.android.support:support-annotations:${androidAnnotationsVersion}"
+      daggerCompiler:            "com.google.dagger:dagger-compiler:${daggerVersion}",
+      dagger:                    "com.google.dagger:dagger:${daggerVersion}",
+      okHttp:                    "com.squareup.okhttp:okhttp:${okHttpVersion}",
+      gson:                      "com.google.code.gson:gson:${gsonVersion}",
+      rxJava:                    "io.reactivex:rxjava:${rxJavaVersion}",
+      rxAndroid:                 "io.reactivex:rxandroid:${rxAndroidVersion}",
+      javaxAnnotation:           "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+      javaxInject:               "javax.inject:javax.inject:${javaxInjectVersion}",
+      androidAnnotations:        "com.android.support:support-annotations:${androidAnnotationsVersion}",
+      androidSupportAppcompat:   "com.android.support:appcompat-v7:${supportAppcompatVersion}",
+      janet                  :   "com.github.techery:janet:${janetVersion}",
+      janetService           :   "com.github.techery.janet-http:service:${janetServiceVersion}",
+      janetServiceCompiler   :   "com.github.techery.janet-http:service-compiler:${janetServiceVersion}",
+      janetOkHttp            :   "com.github.techery.janet-http:client-okhttp3:${janetServiceVersion}",
+      janetGsonConvertor     :   "com.github.techery.janet-converters:gson:${janetGsonConvertorVersion}"
   ]
 
   dataTestDependencies = [
