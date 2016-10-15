@@ -19,6 +19,8 @@ buildscript {
 dependencies {
     def domainDependencies = rootProject.ext.domainDependencies
     apt domainDependencies.immutables
+    compile domainDependencies.rxJava
+    compile domainDependencies.javaxInject
     compileOnly domainDependencies.immutablesAnnotations
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
