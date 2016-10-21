@@ -29,6 +29,7 @@ ext {
   janetVersion = '1.0.4'
   janetServiceVersion = '1.0.5'
   janetGsonConvertorVersion = '1.0.1'
+  flowVersion = '0.12'
 
   //Testing
   robolectricVersion = '3.0'
@@ -52,6 +53,7 @@ ext {
       javaxAnnotation:    "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
       design:             "com.android.support:design:${designLibraryVersion}",
       supportAppCompat:   "com.android.support:appcompat-v7:${supportAppcompatVersion}",
+      flow:               "com.squareup.flow:flow:${flowVersion}",
   ]
 
   presentationTestDependencies = [

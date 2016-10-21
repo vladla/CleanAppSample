@@ -46,6 +46,7 @@ dependencies {
     provided presentationDependencies.javaxAnnotation
     apt presentationDependencies.daggerCompiler
     compile presentationDependencies.dagger
+    compile presentationDependencies.flow
 
     androidTestCompile presentationTestDependencies.mockito
     androidTestCompile presentationTestDependencies.dexmaker

@@ -17,6 +17,8 @@ package com.cleanappsample.domain.interactor;
 
 
 import com.cleanappsample.domain.User;
+import com.cleanappsample.domain.executor.PostExecutionThread;
+import com.cleanappsample.domain.executor.ThreadExecutor;
 import com.cleanappsample.domain.repository.UserRepository;
 
 import javax.inject.Inject;
