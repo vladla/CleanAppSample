@@ -47,6 +47,8 @@ dependencies {
     apt presentationDependencies.daggerCompiler
     compile presentationDependencies.dagger
     compile presentationDependencies.flow
+    compile presentationDependencies.presenta
+    compile presentationDependencies.presentaAdditions
 
     androidTestCompile presentationTestDependencies.mockito
     androidTestCompile presentationTestDependencies.dexmaker

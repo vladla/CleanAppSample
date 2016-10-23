@@ -1,5 +1,6 @@
 package com.cleanappsample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,20 +14,36 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.cleanappsample.di.ScreenComponent;
 import com.cleanappsample.di.modules.NetworkModule;
 import com.cleanappsample.preferences.PreferenceManager;
+import com.cleanappsample.screen.ChatListScreen;
 import com.cleanappsample.view.BaseActivity;
+import com.google.gson.Gson;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import flow.Flow;
+import flow.FlowDelegate;
+import flow.History;
 import io.techery.janet.Janet;
+import io.techery.presenta.addition.flow.util.GsonParceler;
+import io.techery.presenta.di.ScreenScope;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Flow.Dispatcher {
+
+    @ScreenScope(MainActivity.class)
+    @dagger.Component(dependencies = CleanSampleApplication.AppComponent.class)
+    public interface Component extends CleanSampleApplication.AppComponent, ScreenComponent {
+        void inject(MainActivity activity);
+    }
+
 
     @Inject
     PreferenceManager preferenceManager;
+    private FlowDelegate flowSupport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +70,38 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        History history = History.single(new ChatListScreen());
+        FlowDelegate.NonConfigurationInstance nonConfig = (FlowDelegate.NonConfigurationInstance) getLastCustomNonConfigurationInstance();
+        flowSupport = FlowDelegate.onCreate(nonConfig, getIntent(), savedInstanceState, new GsonParceler(new Gson()), history, this);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        flowSupport.onNewIntent(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        flowSupport.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        flowSupport.onPause();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        flowSupport.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public Object onRetainCustomNonConfigurationInstance() {
+        return flowSupport.onRetainNonConfigurationInstance();
     }
 
     @Override
@@ -61,6 +110,7 @@ public class MainActivity extends BaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            if (flowSupport.onBackPressed()) return;
             super.onBackPressed();
         }
     }
@@ -110,5 +160,10 @@ public class MainActivity extends BaseActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void dispatch(Flow.Traversal traversal, Flow.TraversalCallback callback) {
+
     }
 }

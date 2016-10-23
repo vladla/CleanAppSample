@@ -30,6 +30,7 @@ ext {
   janetServiceVersion = '1.0.5'
   janetGsonConvertorVersion = '1.0.1'
   flowVersion = '0.12'
+  presentaVersion = '0.1.6'
 
   //Testing
   robolectricVersion = '3.0'
@@ -54,6 +55,8 @@ ext {
       design:             "com.android.support:design:${designLibraryVersion}",
       supportAppCompat:   "com.android.support:appcompat-v7:${supportAppcompatVersion}",
       flow:               "com.squareup.flow:flow:${flowVersion}",
+      presenta:           "com.github.techery.presenta:library:${presentaVersion}",
+      presentaAdditions:  "com.github.techery.presenta:library-additions:${presentaVersion}",
   ]
 
   presentationTestDependencies = [
