@@ -16,7 +16,7 @@
   ~ limitations under the License.
   -->
 
-<com.example.presenta.view.FriendView
+<com.cleanappsample.view.FriendView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -41,4 +41,4 @@
             />
     </LinearLayout>
 
-</com.example.presenta.view.FriendView>
+</com.cleanappsample.view.FriendView>

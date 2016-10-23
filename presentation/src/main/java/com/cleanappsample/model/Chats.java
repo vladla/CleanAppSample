@@ -36,12 +36,10 @@ public class Chats {
   final User me = new User(-1, "Me");
 
   final Executor messagePollThread;
-  final QuoteService service;
 
   @Inject
-  Chats(Executor messagePollThread, QuoteService service) {
+  Chats(Executor messagePollThread) {
     this.messagePollThread = messagePollThread;
-    this.service = service;
 
     User alex = new User(0, "Alex");
     User chris = new User(1, "Chris");

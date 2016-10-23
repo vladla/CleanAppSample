@@ -19,7 +19,6 @@ public class CleanSampleApplication extends Application {
     @Component(modules =  RootModule.class)
     public interface AppComponent {
         void inject(CleanSampleApplication application);
-        ActionBarOwner actionBarOwner();
         Chats chats();
     }
 
