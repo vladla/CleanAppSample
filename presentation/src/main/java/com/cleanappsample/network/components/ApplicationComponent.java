@@ -1,10 +1,10 @@
-package com.cleanappsample.di.components;
+package com.cleanappsample.network.components;
 
 import com.cleanappsample.CleanSampleApplication;
 import com.cleanappsample.MainActivity;
 import com.cleanappsample.di.RootModule;
-import com.cleanappsample.di.modules.ApplicationModule;
-import com.cleanappsample.di.modules.NetworkModule;
+import com.cleanappsample.network.modules.ApplicationModule;
+import com.cleanappsample.network.NetworkModule;
 
 import javax.inject.Singleton;
 

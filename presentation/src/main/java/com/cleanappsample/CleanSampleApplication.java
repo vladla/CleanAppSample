@@ -2,10 +2,12 @@ package com.cleanappsample;
 
 import android.app.Application;
 
-import com.cleanappsample.di.components.ApplicationComponent;
-
 import io.techery.presenta.mortar.DaggerService;
 import mortar.MortarScope;
+import com.cleanappsample.network.components.ApplicationComponent;
+import com.cleanappsample.network.components.DaggerApplicationComponent;
+import com.cleanappsample.network.modules.ApplicationModule;
+import com.cleanappsample.network.NetworkModule;
 
 public class CleanSampleApplication extends Application {
 

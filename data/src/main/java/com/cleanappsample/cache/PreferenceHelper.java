@@ -1,4 +1,4 @@
-package com.cleanappsample.preferences;
+package com.cleanappsample.cache;
 
 import android.content.Context;
 import android.content.SharedPreferences;

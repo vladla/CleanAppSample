@@ -1,10 +1,10 @@
-package com.cleanappsample.di.modules;
+package com.cleanappsample.network.modules;
 
 import android.content.Context;
 
 import com.cleanappsample.CleanSampleApplication;
-import com.cleanappsample.preferences.PreferenceHelper;
-import com.cleanappsample.preferences.PreferenceManager;
+import com.cleanappsample.cache.PreferenceHelper;
+import com.cleanappsample.cache.PreferenceManager;
 
 import javax.inject.Singleton;
 

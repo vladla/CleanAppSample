@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.cleanappsample.di.ScreenComponent;
-import com.cleanappsample.di.components.ApplicationComponent;
+import com.cleanappsample.network.components.ApplicationComponent;
 import com.cleanappsample.screen.FriendListScreen;
 import com.cleanappsample.view.BaseActivity;
 import com.google.gson.Gson;
@@ -30,6 +30,11 @@ import io.techery.presenta.di.ScreenScope;
 import io.techery.presenta.mortar.DaggerService;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
+import com.cleanappsample.view.BaseActivity;
+
+import javax.inject.Inject;
+
+import io.techery.janet.Janet;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, Flow.Dispatcher {
@@ -78,6 +83,9 @@ public class MainActivity extends BaseActivity
     private MortarScope activityScope;
     private PathContainerView container;
     private BackSupport.HandlesBack containerAsBackTarget;
+
+    @Inject
+    Janet janet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -55,6 +55,7 @@ android {
             force = true
         }
         compile dataDependencies.janetGsonConvertor
+        compile dataDependencies.immutablesGson
         testCompile testDependencies.junit
     }
 }

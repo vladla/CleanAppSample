@@ -26,11 +26,13 @@ ext {
   designLibraryVersion = '24.2.1'
   supportAppcompatVersion = '24.2.1'
   immutablesVersion = '2.3.2'
-  janetVersion = '1.0.4'
-  janetServiceVersion = '1.0.5'
+  janetVersion = '1.0.6'
+  janetServiceVersion = '1.0.9'
   janetGsonConvertorVersion = '1.0.1'
   flowVersion = '0.12'
   presentaVersion = '0.1.6'
+  immutablesGsonVersion = '2.3.2'
+  stethoVersion = '1.4.1'
 
   //Testing
   robolectricVersion = '3.0'
@@ -57,6 +59,11 @@ ext {
       flow:               "com.squareup.flow:flow:${flowVersion}",
       presenta:           "com.github.techery.presenta:library:${presentaVersion}",
       presentaAdditions:  "com.github.techery.presenta:library-additions:${presentaVersion}",
+      janet                  :   "com.github.techery:janet:${janetVersion}",
+      janetService           :   "com.github.techery.janet-http:service:${janetServiceVersion}",
+      janetServiceCompiler   :   "com.github.techery.janet-http:service-compiler:${janetServiceVersion}",
+      janetOkHttp            :   "com.github.techery.janet-http:client-okhttp3:${janetServiceVersion}",
+      janetGsonConvertor     :   "com.github.techery.janet-converters:gson:${janetGsonConvertorVersion}"
   ]
 
   presentationTestDependencies = [
@@ -95,7 +102,9 @@ ext {
       janetService           :   "com.github.techery.janet-http:service:${janetServiceVersion}",
       janetServiceCompiler   :   "com.github.techery.janet-http:service-compiler:${janetServiceVersion}",
       janetOkHttp            :   "com.github.techery.janet-http:client-okhttp3:${janetServiceVersion}",
-      janetGsonConvertor     :   "com.github.techery.janet-converters:gson:${janetGsonConvertorVersion}"
+      janetGsonConvertor     :   "com.github.techery.janet-converters:gson:${janetGsonConvertorVersion}",
+      immutablesGson         :   "org.immutables:gson:${immutablesGsonVersion}",
+      stetho                 :   "com.facebook.stetho:stetho-okhttp3:${stethoVersion}"
   ]
 
   dataTestDependencies = [
