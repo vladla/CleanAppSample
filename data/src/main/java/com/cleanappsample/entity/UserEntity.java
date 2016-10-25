@@ -4,13 +4,12 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.immutables.gson.Gson;
 import org.immutables.value.Value;
 
 /**
  * Created by Anton Khorunzhyi on 10/25/2016.
  */
-@Gson.TypeAdapters
+
 @Value.Immutable
 public abstract class UserEntity {
 

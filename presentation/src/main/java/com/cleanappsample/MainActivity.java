@@ -32,7 +32,12 @@ import io.techery.presenta.mortar.DaggerService;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 import com.cleanappsample.actions.UsersAction;
+import com.cleanappsample.domain.User;
+import com.cleanappsample.entity.UserEntity;
+import com.cleanappsample.entity.mapper.UserEntityMapper;
 import com.cleanappsample.view.BaseActivity;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -91,6 +96,8 @@ public class MainActivity extends BaseActivity
 
     @Inject
     Janet janet;
+    @Inject
+    UserEntityMapper userEntityMapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,10 +185,14 @@ public class MainActivity extends BaseActivity
         actionPipe.observe().subscribe(new ActionStateSubscriber<UsersAction>()
                 .onStart(action -> System.out.println("Request is being sent " + action))
                 .onProgress((action, progress) -> System.out.println("Request in progress: " + progress))
-                .onSuccess(action -> Log.d("onSuccess", action.getResponse().toString()))
+                .onSuccess(action -> processUser(action.getResponse()))
                 .onFail((action, throwable) -> Log.d("onError", throwable.getLocalizedMessage()))
         );
         actionPipe.send(new UsersAction());
+    }
+
+    private void processUser(List<UserEntity> response) {
+        List<User> userList = userEntityMapper.convert(response);
     }
 
     @Override

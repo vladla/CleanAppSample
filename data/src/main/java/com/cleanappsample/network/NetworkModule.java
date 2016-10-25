@@ -1,6 +1,6 @@
 package com.cleanappsample.network;
 
-import com.cleanappsample.entity.GsonAdaptersUserEntity;
+import com.cleanappsample.entity.GsonAdaptersEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -53,7 +53,7 @@ public class NetworkModule {
     @Singleton
     Gson provideGson() {
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapterFactory(new GsonAdaptersUserEntity());
+        builder.registerTypeAdapterFactory(new GsonAdaptersEntity());
         builder.serializeNulls();
         return builder.create();
     }

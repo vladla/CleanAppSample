@@ -55,6 +55,7 @@ android {
         apt dataDependencies.immutables
         compile dataDependencies.immutablesAnnotations
         provided dataDependencies.immutablesBuilder
+//        compile group: dataDependencies.modelMapper, name: dataDependencies.modelMapperName, version: dataDependencies.modelMapperVersion
         testCompile testDependencies.junit
     }
 }

@@ -33,7 +33,7 @@ ext {
   presentaVersion = '0.1.6'
   immutablesGsonVersion = '2.3.2'
   stethoVersion = '1.4.1'
-
+  modelMapperVersion = '0.7.5'
 
     //Testing
     robolectricVersion = '3.0'
@@ -79,6 +79,7 @@ ext {
     domainDependencies = [
             immutables           : "org.immutables:value:${immutablesVersion}",
             immutablesAnnotations: "org.immutables:value:${immutablesVersion}:annotations",
+            androidAnnotations     : "com.android.support:support-annotations:${androidAnnotationsVersion}",
             javaxAnnotation      : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
             javaxInject          : "javax.inject:javax.inject:${javaxInjectVersion}",
             rxJava               : "io.reactivex:rxjava:${rxJavaVersion}",
@@ -110,7 +111,10 @@ ext {
             immutablesAnnotations  : "org.immutables:value:${immutablesVersion}:annotations",
             immutablesBuilder      : "org.immutables:builder:${immutablesVersion}",
             immutablesGsonAnnotations    : "org.immutables:gson:${immutablesVersion}:annotations",
-            stetho                 : "com.facebook.stetho:stetho-okhttp3:${stethoVersion}"
+            stetho                 : "com.facebook.stetho:stetho-okhttp3:${stethoVersion}",
+            modelMapper            : 'org.modelmapper',
+            modelMapperName        : 'modelmapper',
+            modelMapperVersion     : "${modelMapperVersion}"
     ]
 
     dataTestDependencies = [
