@@ -1,6 +1,8 @@
 package com.cleanappsample.network;
 
+import com.cleanappsample.entity.GsonAdaptersUserEntity;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -11,8 +13,6 @@ import io.techery.janet.HttpActionService;
 import io.techery.janet.Janet;
 import io.techery.janet.gson.GsonConverter;
 import io.techery.janet.okhttp3.OkClient;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 @Module
 public class NetworkModule {
@@ -34,18 +34,13 @@ public class NetworkModule {
     @Provides
     @Named(NAMED_BASE_URL)
     String provideBaseUrl() {
-        return "https://api.github.com"; // ToDo replace with base url
+        return "http://www.android10.org/myapi"; // ToDo replace with base url
     }
 
     @Provides
     @Singleton
     OkClient provideOkClient() {
-        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().addInterceptor(chain -> {
-            Request.Builder builderRequest = chain.request().newBuilder();  // ToDo configure request
-            Request request = builderRequest.build();
-            return chain.proceed(request);
-        });
-        return new OkClient(clientBuilder.build());
+        return new OkClient();
     }
 
     @Provides
@@ -57,7 +52,10 @@ public class NetworkModule {
     @Provides
     @Singleton
     Gson provideGson() {
-        return new Gson();
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapterFactory(new GsonAdaptersUserEntity());
+        builder.serializeNulls();
+        return builder.create();
     }
 
 }

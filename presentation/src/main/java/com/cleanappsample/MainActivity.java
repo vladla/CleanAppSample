@@ -9,6 +9,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,11 +31,15 @@ import io.techery.presenta.di.ScreenScope;
 import io.techery.presenta.mortar.DaggerService;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
+import com.cleanappsample.actions.UsersAction;
 import com.cleanappsample.view.BaseActivity;
 
 import javax.inject.Inject;
 
+import io.techery.janet.ActionPipe;
 import io.techery.janet.Janet;
+import io.techery.janet.helper.ActionStateSubscriber;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, Flow.Dispatcher {
@@ -112,13 +117,8 @@ public class MainActivity extends BaseActivity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -154,12 +154,6 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        flowSupport.onResume();
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         flowSupport.onPause();
@@ -174,6 +168,20 @@ public class MainActivity extends BaseActivity
     @Override
     public Object onRetainCustomNonConfigurationInstance() {
         return flowSupport.onRetainNonConfigurationInstance();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        flowSupport.onResume();
+        ActionPipe<UsersAction> actionPipe = janet.createPipe(UsersAction.class, Schedulers.io());
+        actionPipe.observe().subscribe(new ActionStateSubscriber<UsersAction>()
+                .onStart(action -> System.out.println("Request is being sent " + action))
+                .onProgress((action, progress) -> System.out.println("Request in progress: " + progress))
+                .onSuccess(action -> Log.d("onSuccess", action.getResponse().toString()))
+                .onFail((action, throwable) -> Log.d("onError", throwable.getLocalizedMessage()))
+        );
+        actionPipe.send(new UsersAction());
     }
 
     @Override

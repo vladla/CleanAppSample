@@ -39,23 +39,22 @@ android {
         def dataDependencies = rootProject.ext.dataDependencies
         def testDependencies = rootProject.ext.dataTestDependencies
 
+        compile project(':domain')
+
         compile dataDependencies.gson
         compile dataDependencies.androidSupportAppcompat
         apt dataDependencies.daggerCompiler
         compile dataDependencies.dagger
         provided dataDependencies.javaxAnnotation
         compile dataDependencies.janet
-        compile (dataDependencies.janetService) {
-            force = true
-        }
-        apt (dataDependencies.janetServiceCompiler) {
-            force = true
-        }
-        compile (dataDependencies.janetOkHttp) {
-            force = true
-        }
+        compile dataDependencies.janetService
+        apt dataDependencies.janetServiceCompiler
+        compile dataDependencies.janetOkHttp
         compile dataDependencies.janetGsonConvertor
         compile dataDependencies.immutablesGson
+        apt dataDependencies.immutables
+        compile dataDependencies.immutablesAnnotations
+        provided dataDependencies.immutablesBuilder
         testCompile testDependencies.junit
     }
 }
