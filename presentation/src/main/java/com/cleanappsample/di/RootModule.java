@@ -15,7 +15,6 @@
  */
 package com.cleanappsample.di;
 
-import com.cleanappsample.model.Chats;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -28,7 +27,7 @@ import io.techery.presenta.di.ApplicationScope;
 /**
  * Defines app-wide singletons.
  */
-@Module(includes = {Chats.Module.class})
+@Module
 public class RootModule {
     @Provides
     @ApplicationScope
@@ -38,7 +37,7 @@ public class RootModule {
 
     @Provides
     @ApplicationScope
-    StateParceler provideParcer(Gson gson) {
+    StateParceler provideParcel(Gson gson) {
         return new GsonParceler(gson);
     }
 }

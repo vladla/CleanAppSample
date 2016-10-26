@@ -19,15 +19,12 @@ import android.os.Bundle;
 
 import com.cleanappsample.R;
 import com.cleanappsample.flow.HasParent;
-import com.cleanappsample.model.Chats;
 import com.cleanappsample.model.User;
 import com.cleanappsample.view.FriendListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import flow.Flow;
 import flow.path.Path;
 import io.techery.presenta.addition.flow.path.Layout;
 import io.techery.presenta.mortarscreen.presenter.InjectablePresenter;
@@ -36,14 +33,19 @@ import io.techery.presenta.mortarscreen.presenter.WithPresenter;
 @Layout(R.layout.friend_list_view) @WithPresenter(FriendListScreen.Presenter.class)
 public class FriendListScreen extends Path implements HasParent {
 
+  @Override
+  public Object getParent() {
+    return null;
+  }
+
   public static class Presenter extends InjectablePresenter<FriendListView> {
     List<User> friends;
-    @Inject
-    Chats service;
-
     public Presenter(PresenterInjector injector) {
       super(injector);
-      this.friends = service.getFriends();
+      friends = new ArrayList<>();
+      for (int i = 0; i < 100; i++) {
+        friends.add(new User(i, "User " + i));
+      }
     }
 
     @Override
@@ -54,12 +56,9 @@ public class FriendListScreen extends Path implements HasParent {
     }
 
     public void onFriendSelected(int position) {
-      Flow.get(getView()).set(new FriendScreen(position));
+      //TODO: complete
+//      Flow.get(getView()).set(new FriendScreen(position));
     }
   }
 
-  @Override
-  public ChatListScreen getParent() {
-    return new ChatListScreen();
-  }
 }

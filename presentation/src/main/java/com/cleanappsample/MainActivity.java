@@ -3,35 +3,28 @@ package com.cleanappsample;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.cleanappsample.di.ScreenComponent;
 import com.cleanappsample.di.components.ApplicationComponent;
-import com.cleanappsample.di.modules.NetworkModule;
-import com.cleanappsample.preferences.PreferenceManager;
-import com.cleanappsample.screen.ChatListScreen;
-import com.cleanappsample.screen.ChatScreen;
+import com.cleanappsample.screen.FriendListScreen;
 import com.cleanappsample.view.BaseActivity;
 import com.google.gson.Gson;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
-import dagger.Provides;
 import flow.Flow;
 import flow.FlowDelegate;
 import flow.History;
 import flow.path.Path;
-import io.techery.janet.Janet;
+import flow.path.PathContainerView;
+import io.techery.presenta.addition.flow.util.BackSupport;
 import io.techery.presenta.addition.flow.util.GsonParceler;
 import io.techery.presenta.di.ScreenScope;
 import io.techery.presenta.mortar.DaggerService;
@@ -83,6 +76,8 @@ public class MainActivity extends BaseActivity
 
     private FlowDelegate flowSupport;
     private MortarScope activityScope;
+    private PathContainerView container;
+    private BackSupport.HandlesBack containerAsBackTarget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +120,11 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        History history = History.single(new ChatListScreen());
+        container = (PathContainerView) findViewById(R.id.container);
+        containerAsBackTarget = (BackSupport.HandlesBack) container;
+
+
+        History history = History.single(new FriendListScreen());
         FlowDelegate.NonConfigurationInstance nonConfig = (FlowDelegate.NonConfigurationInstance) getLastCustomNonConfigurationInstance();
         flowSupport = FlowDelegate.onCreate(nonConfig, getIntent(), savedInstanceState, new GsonParceler(new Gson()), history, this);
     }
@@ -175,6 +174,7 @@ public class MainActivity extends BaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            if (containerAsBackTarget.onBackPressed()) return;
             if (flowSupport.onBackPressed()) return;
             super.onBackPressed();
         }
@@ -228,7 +228,25 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void dispatch(Flow.Traversal traversal, Flow.TraversalCallback callback) {
+    public void dispatch(Flow.Traversal traversal, final Flow.TraversalCallback callback) {
+        Path path = traversal.destination.top();
+        setTitle(path.getClass().getSimpleName());
+        boolean canGoBack = traversal.destination.size() > 1;
+//        String title = path.getClass().getSimpleName();
+//        ActionBarOwner.MenuAction menu = canGoBack ? null : new ActionBarOwner.MenuAction("Friends", new Runnable() {
+//            @Override
+//            public void run() {
+//                Flow.get(MortarDemoActivity.this).set(new FriendListScreen());
+//            }
+//        });
+//        actionBarOwner.setConfig(new ActionBarOwner.Config(false, canGoBack, title, menu));
+        container.dispatch(traversal, new Flow.TraversalCallback() {
+            @Override
+            public void onTraversalCompleted() {
+                invalidateOptionsMenu();
+                callback.onTraversalCompleted();
+            }
+        });
 
     }
 }
