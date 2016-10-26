@@ -1,4 +1,4 @@
-package com.cleanappsample.utils;
+package com.cleanappsample.di.modules;
 
 import com.cleanappsample.entity.mapper.UserEntityMapper;
 
@@ -12,7 +12,6 @@ import dagger.Provides;
  */
 @Module
 public class UtilsModule {
-
 
     @Provides
     @Singleton

@@ -2,10 +2,10 @@ package com.cleanappsample;
 
 import android.app.Application;
 
+import com.cleanappsample.di.components.ApplicationComponent;
+
 import io.techery.presenta.mortar.DaggerService;
 import mortar.MortarScope;
-import com.cleanappsample.network.components.ApplicationComponent;
-import com.cleanappsample.network.components.DaggerApplicationComponent;
 
 public class CleanSampleApplication extends Application {
 
@@ -20,7 +20,8 @@ public class CleanSampleApplication extends Application {
     }
 
 
-    @Override public Object getSystemService(String name) {
+    @Override
+    public Object getSystemService(String name) {
         if (rootScope == null) {
             rootScope = MortarScope.buildRootScope()
                     .withService(DaggerService.SERVICE_NAME, component)

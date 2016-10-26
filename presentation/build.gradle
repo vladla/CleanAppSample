@@ -54,9 +54,16 @@ dependencies {
     provided presentationDependencies.javaxAnnotation
     apt presentationDependencies.daggerCompiler
     compile presentationDependencies.dagger
+<<<<<<< 3ab5c034d0073a1bbb33344dc3f06471c663df93
     compile presentationDependencies.flow
     compile presentationDependencies.presenta
     compile presentationDependencies.presentaAdditions
+=======
+    provided presentationDependencies.autoValue
+    apt presentationDependencies.autoValue
+    apt presentationDependencies.autoValueParcel
+    compile presentationDependencies.autovalueParcelAdapter
+>>>>>>> added autovalue and usermapper
 
     androidTestCompile presentationTestDependencies.mockito
     androidTestCompile presentationTestDependencies.dexmaker

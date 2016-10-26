@@ -1,4 +1,4 @@
-package com.cleanappsample.network.modules;
+package com.cleanappsample.di.modules;
 
 import android.content.Context;
 

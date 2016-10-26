@@ -1,6 +1,6 @@
 package com.cleanappsample.entity.mapper;
 
-import com.cleanappsample.domain.ImmutableUser;
+
 import com.cleanappsample.domain.User;
 import com.cleanappsample.entity.UserEntity;
 
@@ -21,7 +21,7 @@ public class UserEntityMapper {
     }
 
     public User convert(UserEntity userEntity){
-        ImmutableUser user = ImmutableUser.builder()
+        User user = User.builder()
                 .userId(userEntity.id())
                 .coverUrl(userEntity.coverUrl())
                 .description(userEntity.description())

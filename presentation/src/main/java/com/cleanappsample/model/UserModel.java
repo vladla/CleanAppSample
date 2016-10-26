@@ -1,11 +1,13 @@
-package com.cleanappsample.domain;
+package com.cleanappsample.model;
 
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 
 @AutoValue
-public abstract class User{
+public abstract class UserModel implements Parcelable{
+
     public abstract int getUserId();
     @Nullable public abstract String getCoverUrl();
     @Nullable public abstract String getFullName();
@@ -14,7 +16,7 @@ public abstract class User{
     public abstract int getFollowers();
 
     public static Builder builder() {
-        return new AutoValue_User.Builder();
+        return new AutoValue_UserModel.Builder();
     }
 
     @AutoValue.Builder
@@ -25,6 +27,6 @@ public abstract class User{
         public abstract Builder email(String email);
         public abstract Builder followers(int followers);
         public abstract Builder description(String description);
-        public abstract User build();
+        public abstract UserModel build();
     }
 }

@@ -12,10 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.cleanappsample.di.ScreenComponent;
-import com.cleanappsample.network.components.ApplicationComponent;
+import com.cleanappsample.di.components.ApplicationComponent;
 import com.cleanappsample.screen.FriendListScreen;
 import com.cleanappsample.view.BaseActivity;
 import com.google.gson.Gson;
@@ -276,4 +275,5 @@ public class MainActivity extends BaseActivity
         });
 
     }
+
 }

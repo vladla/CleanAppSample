@@ -34,6 +34,9 @@ ext {
   immutablesGsonVersion = '2.3.2'
   stethoVersion = '1.4.1'
   modelMapperVersion = '0.7.5'
+    autovalueVersion = '1.3'
+    autovalueParcelVersion = '0.2.5'
+
 
     //Testing
     robolectricVersion = '3.0'
@@ -65,7 +68,10 @@ ext {
       janetService           :   "com.github.techery.janet-http:service:${janetServiceVersion}",
       janetServiceCompiler   :   "com.github.techery.janet-http:service-compiler:${janetServiceVersion}",
       janetOkHttp            :   "com.github.techery.janet-http:client-okhttp3:${janetServiceVersion}",
-      janetGsonConvertor     :   "com.github.techery.janet-converters:gson:${janetGsonConvertorVersion}"
+      janetGsonConvertor     :   "com.github.techery.janet-converters:gson:${janetGsonConvertorVersion}",
+      autoValue              : "com.google.auto.value:auto-value:${autovalueVersion}",
+      autoValueParcel     : "com.ryanharter.auto.value:auto-value-parcel:${autovalueParcelVersion}",
+      autovalueParcelAdapter : "com.ryanharter.auto.value:auto-value-parcel-adapter:${autovalueParcelVersion}"
   ]
 
     presentationTestDependencies = [
@@ -83,6 +89,7 @@ ext {
             javaxAnnotation      : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
             javaxInject          : "javax.inject:javax.inject:${javaxInjectVersion}",
             rxJava               : "io.reactivex:rxjava:${rxJavaVersion}",
+            autoValue            : "com.google.auto.value:auto-value:${autovalueVersion}"
     ]
 
     domainTestDependencies = [
@@ -114,7 +121,10 @@ ext {
             stetho                 : "com.facebook.stetho:stetho-okhttp3:${stethoVersion}",
             modelMapper            : 'org.modelmapper',
             modelMapperName        : 'modelmapper',
-            modelMapperVersion     : "${modelMapperVersion}"
+            modelMapperVersion     : "${modelMapperVersion}",
+            autoValue              : "com.google.auto.value:auto-value:${autovalueVersion}",
+            autoValueParcel     : "com.ryanharter.auto.value:auto-value-parcel:${autovalueParcelVersion}",
+            autovalueParcelAdapter : "com.ryanharter.auto.value:auto-value-parcel-adapter:${autovalueParcelVersion}"
     ]
 
     dataTestDependencies = [
