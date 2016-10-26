@@ -51,15 +51,10 @@ android {
         apt dataDependencies.janetServiceCompiler
         compile dataDependencies.janetOkHttp
         compile dataDependencies.janetGsonConvertor
-        compile dataDependencies.immutablesGson
-        apt dataDependencies.immutables
-        compile dataDependencies.immutablesAnnotations
-        provided dataDependencies.immutablesBuilder
         provided dataDependencies.autoValue
         apt dataDependencies.autoValue
         apt dataDependencies.autoValueParcel
         compile dataDependencies.autovalueParcelAdapter
-//        compile group: dataDependencies.modelMapper, name: dataDependencies.modelMapperName, version: dataDependencies.modelMapperVersion
         testCompile testDependencies.junit
     }
 }

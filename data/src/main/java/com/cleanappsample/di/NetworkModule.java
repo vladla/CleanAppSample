@@ -52,7 +52,6 @@ public class NetworkModule {
     @Singleton
     Gson provideGson() {
         GsonBuilder builder = new GsonBuilder();
-//        builder.registerTypeAdapterFactory(new GsonAdaptersEntity());
         builder.registerTypeAdapterFactory(new AutoValueAdapterFactory());
         builder.serializeNulls();
         return builder.create();
