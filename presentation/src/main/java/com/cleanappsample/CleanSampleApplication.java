@@ -12,32 +12,33 @@ import com.cleanappsample.model.Chats;
 import dagger.Component;
 import io.techery.presenta.addition.ActionBarOwner;
 import io.techery.presenta.di.ApplicationScope;
+import io.techery.presenta.mortar.DaggerService;
+import mortar.MortarScope;
 
 public class CleanSampleApplication extends Application {
 
-    @ApplicationScope
-    @Component(modules =  RootModule.class)
-    public interface AppComponent {
-        void inject(CleanSampleApplication application);
-        Chats chats();
-    }
-
-    private ApplicationComponent applicationComponent;
+    private ApplicationComponent component;
+    private MortarScope rootScope;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        initComponents();
+        component = DaggerService.createComponent(ApplicationComponent.class);
+        rootScope = MortarScope.buildRootScope()
+                .withService(DaggerService.SERVICE_NAME, component)
+                .build("root");
+        component.inject(this);
     }
 
-    private void initComponents() {
-        applicationComponent = DaggerApplicationComponent.builder()
-                .applicationModule(new ApplicationModule(this))
-                .networkModule(new NetworkModule())
-                .build();
+
+    @Override public Object getSystemService(String name) {
+        Object mortarService = rootScope.getService(name);
+        if (mortarService != null) return mortarService;
+
+        return super.getSystemService(name);
     }
 
     public ApplicationComponent getApplicationComponent() {
-        return applicationComponent;
+        return component;
     }
 }

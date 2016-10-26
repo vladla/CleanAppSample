@@ -15,9 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.cleanappsample.di.ScreenComponent;
+import com.cleanappsample.di.components.ApplicationComponent;
 import com.cleanappsample.di.modules.NetworkModule;
 import com.cleanappsample.preferences.PreferenceManager;
 import com.cleanappsample.screen.ChatListScreen;
+import com.cleanappsample.screen.ChatScreen;
 import com.cleanappsample.view.BaseActivity;
 import com.google.gson.Gson;
 
@@ -32,6 +34,9 @@ import flow.path.Path;
 import io.techery.janet.Janet;
 import io.techery.presenta.addition.flow.util.GsonParceler;
 import io.techery.presenta.di.ScreenScope;
+import io.techery.presenta.mortar.DaggerService;
+import mortar.MortarScope;
+import mortar.bundler.BundleServiceRunner;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, Flow.Dispatcher {
@@ -71,18 +76,35 @@ public class MainActivity extends BaseActivity
 //    }
 
     @ScreenScope(MainActivity.class)
-    @dagger.Component(dependencies = CleanSampleApplication.AppComponent.class)
-    public interface Component extends CleanSampleApplication.AppComponent, ScreenComponent {
+    @dagger.Component(dependencies = ApplicationComponent.class)
+    public interface Component extends ApplicationComponent, ScreenComponent {
         void inject(MainActivity activity);
     }
 
     private FlowDelegate flowSupport;
+    private MortarScope activityScope;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Object appComponent = DaggerService.getDaggerComponent(getApplicationContext());
+        Component component = DaggerService.createComponent(Component.class, appComponent);
+        component.inject(this);
+
+        String scopeName = getLocalClassName() + "-task-" + getTaskId();
+        MortarScope parentScope = MortarScope.getScope(getApplication());
+        activityScope = parentScope.findChild(scopeName);
+        if (activityScope == null) {
+            activityScope = parentScope.buildChild()
+                    .withService(BundleServiceRunner.SERVICE_NAME, new BundleServiceRunner())
+                    .withService(DaggerService.SERVICE_NAME, component)
+                    .build(scopeName);
+        }
+        BundleServiceRunner.getBundleServiceRunner(activityScope).onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
-        getApplicationComponent().inject(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -106,6 +128,16 @@ public class MainActivity extends BaseActivity
         History history = History.single(new ChatListScreen());
         FlowDelegate.NonConfigurationInstance nonConfig = (FlowDelegate.NonConfigurationInstance) getLastCustomNonConfigurationInstance();
         flowSupport = FlowDelegate.onCreate(nonConfig, getIntent(), savedInstanceState, new GsonParceler(new Gson()), history, this);
+    }
+
+    @Override public Object getSystemService(String name) {
+        if (flowSupport != null) {
+            Object flowService = flowSupport.getSystemService(name);
+            if (flowService != null) return flowService;
+        }
+
+        return activityScope != null && activityScope.hasService(name) ? activityScope.getService(name)
+                : super.getSystemService(name);
     }
 
     @Override
