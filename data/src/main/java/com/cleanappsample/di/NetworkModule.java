@@ -19,13 +19,11 @@ public class NetworkModule {
     private static final String NAMED_BASE_URL = "base_url";
 
     @Provides
-    @Singleton
     Janet provideBaseJanet(HttpActionService httpActionService) {
         return new Janet.Builder().addService(httpActionService).build();
     }
 
     @Provides
-    @Singleton
     HttpActionService provideHttpActionService(@Named(NAMED_BASE_URL) String url, OkClient okClient, GsonConverter gsonConverter) {
         return new HttpActionService(url, okClient, gsonConverter);
     }
@@ -37,24 +35,13 @@ public class NetworkModule {
     }
 
     @Provides
-    @Singleton
     OkClient provideOkClient() {
         return new OkClient();
     }
 
     @Provides
-    @Singleton
     GsonConverter provideGsonConverter(Gson gson) {
         return new GsonConverter(gson);
-    }
-
-    @Provides
-    @Singleton
-    Gson provideGson() {
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapterFactory(new AutoValueAdapterFactory());
-        builder.serializeNulls();
-        return builder.create();
     }
 
 }

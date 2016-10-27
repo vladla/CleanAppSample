@@ -13,7 +13,7 @@ import javax.inject.Singleton;
 /**
  * Created by Anton Khorunzhyi on 10/25/2016.
  */
-@Singleton
+
 public class UserEntityMapper {
 
     @Inject

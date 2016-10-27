@@ -6,15 +6,13 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.techery.presenta.di.ApplicationScope;
 
-/**
- * Created by Anton Khorunzhyi on 10/25/2016.
- */
 @Module
 public class UtilsModule {
 
     @Provides
-    @Singleton
+    @ApplicationScope
     UserEntityMapper provideUserEntityMapper() {
         return new UserEntityMapper();
     }

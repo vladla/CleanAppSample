@@ -32,7 +32,10 @@ public class RootModule {
     @Provides
     @ApplicationScope
     Gson provideGson() {
-        return new GsonBuilder().create();
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapterFactory(new AutoValueAdapterFactory());
+        builder.serializeNulls();
+        return builder.create();
     }
 
     @Provides

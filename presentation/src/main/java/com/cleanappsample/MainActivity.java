@@ -9,7 +9,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -30,20 +29,6 @@ import io.techery.presenta.di.ScreenScope;
 import io.techery.presenta.mortar.DaggerService;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
-import com.cleanappsample.actions.UsersAction;
-import com.cleanappsample.domain.User;
-import com.cleanappsample.entity.UserEntity;
-import com.cleanappsample.entity.mapper.UserEntityMapper;
-import com.cleanappsample.view.BaseActivity;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
-import io.techery.janet.ActionPipe;
-import io.techery.janet.Janet;
-import io.techery.janet.helper.ActionStateSubscriber;
-import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, Flow.Dispatcher {
@@ -93,10 +78,6 @@ public class MainActivity extends BaseActivity
     private PathContainerView container;
     private BackSupport.HandlesBack containerAsBackTarget;
 
-    @Inject
-    Janet janet;
-    @Inject
-    UserEntityMapper userEntityMapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +124,8 @@ public class MainActivity extends BaseActivity
         flowSupport = FlowDelegate.onCreate(nonConfig, getIntent(), savedInstanceState, new GsonParceler(new Gson()), history, this);
     }
 
-    @Override public Object getSystemService(String name) {
+    @Override
+    public Object getSystemService(String name) {
         if (flowSupport != null) {
             Object flowService = flowSupport.getSystemService(name);
             if (flowService != null) return flowService;
@@ -180,19 +162,8 @@ public class MainActivity extends BaseActivity
     protected void onResume() {
         super.onResume();
         flowSupport.onResume();
-        ActionPipe<UsersAction> actionPipe = janet.createPipe(UsersAction.class, Schedulers.io());
-        actionPipe.observe().subscribe(new ActionStateSubscriber<UsersAction>()
-                .onStart(action -> System.out.println("Request is being sent " + action))
-                .onProgress((action, progress) -> System.out.println("Request in progress: " + progress))
-                .onSuccess(action -> processUser(action.getResponse()))
-                .onFail((action, throwable) -> Log.d("onError", throwable.getLocalizedMessage()))
-        );
-        actionPipe.send(new UsersAction());
     }
 
-    private void processUser(List<UserEntity> response) {
-        List<User> userList = userEntityMapper.convert(response);
-    }
 
     @Override
     public void onBackPressed() {
