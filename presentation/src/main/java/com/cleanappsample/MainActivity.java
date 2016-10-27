@@ -114,7 +114,6 @@ public class MainActivity extends BaseActivity
     @Inject
     ActionBarOwner actionBarOwner;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
