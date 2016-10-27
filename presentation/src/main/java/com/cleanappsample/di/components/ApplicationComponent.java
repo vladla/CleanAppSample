@@ -9,6 +9,7 @@ import com.cleanappsample.di.modules.NetworkModule;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import io.techery.presenta.addition.ActionBarOwner;
 import io.techery.presenta.di.ApplicationScope;
 
 @ApplicationScope
@@ -16,4 +17,5 @@ import io.techery.presenta.di.ApplicationScope;
 public interface ApplicationComponent {
     void inject(CleanSampleApplication application);
     void inject(MainActivity mainActivity);
+    ActionBarOwner actionBarOwner();
 }

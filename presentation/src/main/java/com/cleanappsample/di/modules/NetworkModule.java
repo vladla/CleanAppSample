@@ -37,12 +37,6 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    OkClient provideOkClient(){
-        return new OkClient();
-    }
-
-    @Provides
-    @Singleton
     GsonConverter provideGsonConverter(Gson gson){
         return new GsonConverter(gson);
     }

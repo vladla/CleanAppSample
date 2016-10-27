@@ -15,6 +15,7 @@
  */
 package com.cleanappsample.di;
 
+import com.cleanappsample.di.modules.ActionBarModule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -27,7 +28,7 @@ import io.techery.presenta.di.ApplicationScope;
 /**
  * Defines app-wide singletons.
  */
-@Module
+@Module(includes = ActionBarModule.class)
 public class RootModule {
     @Provides
     @ApplicationScope
