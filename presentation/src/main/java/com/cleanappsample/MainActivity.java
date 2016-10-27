@@ -1,5 +1,6 @@
 package com.cleanappsample;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,6 +8,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -18,11 +20,14 @@ import com.cleanappsample.screen.FriendListScreen;
 import com.cleanappsample.view.BaseActivity;
 import com.google.gson.Gson;
 
+import javax.inject.Inject;
+
 import flow.Flow;
 import flow.FlowDelegate;
 import flow.History;
 import flow.path.Path;
 import flow.path.PathContainerView;
+import io.techery.presenta.addition.ActionBarOwner;
 import io.techery.presenta.addition.flow.util.BackSupport;
 import io.techery.presenta.addition.flow.util.GsonParceler;
 import io.techery.presenta.di.ScreenScope;
@@ -30,8 +35,35 @@ import io.techery.presenta.mortar.DaggerService;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 
+import static android.view.MenuItem.SHOW_AS_ACTION_ALWAYS;
+
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Flow.Dispatcher {
+        implements NavigationView.OnNavigationItemSelectedListener, Flow.Dispatcher, ActionBarOwner.Activity {
+    @Override
+    public void setShowHomeEnabled(boolean enabled) {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(false);
+    }
+
+    @Override
+    public void setUpButtonEnabled(boolean enabled) {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(enabled);
+        actionBar.setHomeButtonEnabled(enabled);
+    }
+
+    @Override
+    public void setMenu(ActionBarOwner.MenuAction action) {
+        if (action != actionBarMenuAction) {
+            actionBarMenuAction = action;
+            invalidateOptionsMenu();
+        }
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
 
 //    private enum Screens {
 //        CAMERA(R.id.nav_camera, new ImportScreen()),
@@ -77,28 +109,17 @@ public class MainActivity extends BaseActivity
     private MortarScope activityScope;
     private PathContainerView container;
     private BackSupport.HandlesBack containerAsBackTarget;
+    private ActionBarOwner.MenuAction actionBarMenuAction;
+
+    @Inject
+    ActionBarOwner actionBarOwner;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Object appComponent = DaggerService.getDaggerComponent(getApplicationContext());
-        Component component = DaggerService.createComponent(Component.class, appComponent);
-        component.inject(this);
-
-        String scopeName = getLocalClassName() + "-task-" + getTaskId();
-        MortarScope parentScope = MortarScope.getScope(getApplication());
-        activityScope = parentScope.findChild(scopeName);
-        if (activityScope == null) {
-            activityScope = parentScope.buildChild()
-                    .withService(BundleServiceRunner.SERVICE_NAME, new BundleServiceRunner())
-                    .withService(DaggerService.SERVICE_NAME, component)
-                    .build(scopeName);
-        }
-        BundleServiceRunner.getBundleServiceRunner(activityScope).onCreate(savedInstanceState);
-
-
+        initMortar(savedInstanceState);
+        actionBarOwner.takeView(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -124,8 +145,23 @@ public class MainActivity extends BaseActivity
         flowSupport = FlowDelegate.onCreate(nonConfig, getIntent(), savedInstanceState, new GsonParceler(new Gson()), history, this);
     }
 
-    @Override
-    public Object getSystemService(String name) {
+    private void initMortar(Bundle savedInstanceState) {
+        Object appComponent = DaggerService.getDaggerComponent(getApplicationContext());
+        Component component = DaggerService.createComponent(Component.class, appComponent);
+        component.inject(this);
+        String scopeName = getLocalClassName() + "-task-" + getTaskId();
+        MortarScope parentScope = MortarScope.getScope(getApplication());
+        activityScope = parentScope.findChild(scopeName);
+        if (activityScope == null) {
+            activityScope = parentScope.buildChild()
+                    .withService(BundleServiceRunner.SERVICE_NAME, new BundleServiceRunner())
+                    .withService(DaggerService.SERVICE_NAME, component)
+                    .build(scopeName);
+        }
+        BundleServiceRunner.getBundleServiceRunner(activityScope).onCreate(savedInstanceState);
+    }
+
+    @Override public Object getSystemService(String name) {
         if (flowSupport != null) {
             Object flowService = flowSupport.getSystemService(name);
             if (flowService != null) return flowService;
@@ -179,6 +215,17 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        if (actionBarMenuAction != null) {
+            menu.add(actionBarMenuAction.title)
+                    .setShowAsActionFlags(SHOW_AS_ACTION_ALWAYS)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            actionBarMenuAction.action.run();
+                            return true;
+                        }
+                    });
+        }
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -229,14 +276,14 @@ public class MainActivity extends BaseActivity
         Path path = traversal.destination.top();
         setTitle(path.getClass().getSimpleName());
         boolean canGoBack = traversal.destination.size() > 1;
-//        String title = path.getClass().getSimpleName();
-//        ActionBarOwner.MenuAction menu = canGoBack ? null : new ActionBarOwner.MenuAction("Friends", new Runnable() {
-//            @Override
-//            public void run() {
-//                Flow.get(MortarDemoActivity.this).set(new FriendListScreen());
-//            }
-//        });
-//        actionBarOwner.setConfig(new ActionBarOwner.Config(false, canGoBack, title, menu));
+        String title = path.getClass().getSimpleName();
+        ActionBarOwner.MenuAction menu = canGoBack ? null : new ActionBarOwner.MenuAction("Friends", new Runnable() {
+            @Override
+            public void run() {
+                Flow.get(MainActivity.this).set(new FriendListScreen());
+            }
+        });
+        actionBarOwner.setConfig(new ActionBarOwner.Config(false, canGoBack, title, menu));
         container.dispatch(traversal, new Flow.TraversalCallback() {
             @Override
             public void onTraversalCompleted() {
@@ -247,4 +294,10 @@ public class MainActivity extends BaseActivity
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        actionBarOwner.dropView(this);
+        actionBarOwner.setConfig(null);
+    }
 }
