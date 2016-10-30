@@ -25,18 +25,14 @@ import com.cleanappsample.view.FriendListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import flow.Flow;
 import flow.path.Path;
 import io.techery.presenta.addition.flow.path.Layout;
 import io.techery.presenta.mortarscreen.presenter.InjectablePresenter;
 import io.techery.presenta.mortarscreen.presenter.WithPresenter;
 
 @Layout(R.layout.friend_list_view) @WithPresenter(FriendListScreen.Presenter.class)
-public class FriendListScreen extends Path implements HasParent {
-
-  @Override
-  public Object getParent() {
-    return null;
-  }
+public class FriendListScreen extends Path {
 
   public static class Presenter extends InjectablePresenter<FriendListView> {
     List<User> friends;
@@ -56,8 +52,7 @@ public class FriendListScreen extends Path implements HasParent {
     }
 
     public void onFriendSelected(int position) {
-      //TODO: complete
-//      Flow.get(getView()).set(new FriendScreen(position));
+      Flow.get(getView()).set(new FriendScreen(friends.get(position)));
     }
   }
 

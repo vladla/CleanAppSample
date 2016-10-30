@@ -276,19 +276,11 @@ public class MainActivity extends BaseActivity
         setTitle(path.getClass().getSimpleName());
         boolean canGoBack = traversal.destination.size() > 1;
         String title = path.getClass().getSimpleName();
-        ActionBarOwner.MenuAction menu = canGoBack ? null : new ActionBarOwner.MenuAction("Friends", new Runnable() {
-            @Override
-            public void run() {
-                Flow.get(MainActivity.this).set(new FriendListScreen());
-            }
-        });
+        ActionBarOwner.MenuAction menu = canGoBack ? null : new ActionBarOwner.MenuAction("Friends", () -> Flow.get(MainActivity.this).set(new FriendListScreen()));
         actionBarOwner.setConfig(new ActionBarOwner.Config(false, canGoBack, title, menu));
-        container.dispatch(traversal, new Flow.TraversalCallback() {
-            @Override
-            public void onTraversalCompleted() {
-                invalidateOptionsMenu();
-                callback.onTraversalCompleted();
-            }
+        container.dispatch(traversal, () -> {
+            invalidateOptionsMenu();
+            callback.onTraversalCompleted();
         });
 
     }
