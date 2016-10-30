@@ -2,7 +2,7 @@ package com.cleanappsample.di.components;
 
 import com.cleanappsample.MainActivity;
 import com.cleanappsample.di.modules.ApplicationModule;
-import com.cleanappsample.di.modules.NetworkModule;
+import com.cleanappsample.di.NetworkModule;
 
 import javax.inject.Singleton;
 

@@ -45,15 +45,9 @@ android {
         compile dataDependencies.dagger
         provided dataDependencies.javaxAnnotation
         compile dataDependencies.janet
-        compile (dataDependencies.janetService) {
-            force = true
-        }
-        apt (dataDependencies.janetServiceCompiler) {
-            force = true
-        }
-        compile (dataDependencies.janetOkHttp) {
-            force = true
-        }
+        compile dataDependencies.janetService
+        apt dataDependencies.janetServiceCompiler
+        compile dataDependencies.janetOkHttp
         compile dataDependencies.janetGsonConvertor
         testCompile testDependencies.junit
     }

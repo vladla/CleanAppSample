@@ -8,17 +8,14 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.cleanappsample.di.modules.NetworkModule;
 import com.cleanappsample.preferences.PreferenceManager;
 import com.cleanappsample.view.BaseActivity;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import io.techery.janet.Janet;
 
@@ -26,7 +23,7 @@ public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
-    PreferenceManager preferenceManager;
+    Janet janet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

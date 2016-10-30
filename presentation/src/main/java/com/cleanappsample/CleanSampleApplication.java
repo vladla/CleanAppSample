@@ -5,7 +5,7 @@ import android.app.Application;
 import com.cleanappsample.di.components.ApplicationComponent;
 import com.cleanappsample.di.components.DaggerApplicationComponent;
 import com.cleanappsample.di.modules.ApplicationModule;
-import com.cleanappsample.di.modules.NetworkModule;
+import com.cleanappsample.di.NetworkModule;
 
 public class CleanSampleApplication extends Application {
 
