@@ -7,24 +7,35 @@ import com.cleanappsample.di.components.DaggerApplicationComponent;
 import com.cleanappsample.di.modules.ApplicationModule;
 import com.cleanappsample.di.NetworkModule;
 
+import io.techery.presenta.mortar.DaggerService;
+import mortar.MortarScope;
+
 public class CleanSampleApplication extends Application {
 
-    private ApplicationComponent applicationComponent;
+    private ApplicationComponent component;
+    private MortarScope rootScope;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        initComponents();
+        component = DaggerService.createComponent(ApplicationComponent.class);
+        component.inject(this);
     }
 
-    private void initComponents() {
-        applicationComponent = DaggerApplicationComponent.builder()
-                .applicationModule(new ApplicationModule(this))
-                .networkModule(new NetworkModule())
-                .build();
+
+    @Override
+    public Object getSystemService(String name) {
+        if (rootScope == null) {
+            rootScope = MortarScope.buildRootScope()
+                    .withService(DaggerService.SERVICE_NAME, component)
+                    .build("root");
+        }
+        if (rootScope.hasService(name)) return rootScope.getService(name);
+
+        return super.getSystemService(name);
     }
 
     public ApplicationComponent getApplicationComponent() {
-        return applicationComponent;
+        return component;
     }
 }

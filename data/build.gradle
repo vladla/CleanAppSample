@@ -39,6 +39,8 @@ android {
         def dataDependencies = rootProject.ext.dataDependencies
         def testDependencies = rootProject.ext.dataTestDependencies
 
+        compile project(':domain')
+
         compile dataDependencies.gson
         compile dataDependencies.androidSupportAppcompat
         apt dataDependencies.daggerCompiler
@@ -49,6 +51,10 @@ android {
         apt dataDependencies.janetServiceCompiler
         compile dataDependencies.janetOkHttp
         compile dataDependencies.janetGsonConvertor
+        provided dataDependencies.autoValue
+        apt dataDependencies.autoValue
+        apt dataDependencies.autoValueParcel
+        compile dataDependencies.autovalueParcelAdapter
         testCompile testDependencies.junit
     }
 }
