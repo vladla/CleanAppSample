@@ -26,9 +26,11 @@ import android.widget.ListView;
 
 import com.cleanappsample.model.User;
 import com.cleanappsample.screen.FriendListScreen;
+import com.cleanappsample.screen.FriendScreen;
 
 import java.util.List;
 
+import io.techery.presenta.mortar.DaggerService;
 import io.techery.presenta.mortar.PresenterService;
 
 public class FriendListView extends ListView {
@@ -36,7 +38,7 @@ public class FriendListView extends ListView {
 
   public FriendListView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    presenter = PresenterService.getPresenter(context);
+    DaggerService.<FriendListScreen.Component>getDaggerComponent(context).inject(this);
   }
 
   @Override
