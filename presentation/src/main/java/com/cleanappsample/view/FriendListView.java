@@ -26,14 +26,12 @@ import android.widget.ListView;
 
 import com.cleanappsample.model.User;
 import com.cleanappsample.screen.FriendListScreen;
-import com.cleanappsample.screen.FriendScreen;
-
 import java.util.List;
-
+import javax.inject.Inject;
 import io.techery.presenta.mortar.DaggerService;
-import io.techery.presenta.mortar.PresenterService;
 
 public class FriendListView extends ListView {
+  @Inject
   FriendListScreen.Presenter presenter;
 
   public FriendListView(Context context, AttributeSet attrs) {

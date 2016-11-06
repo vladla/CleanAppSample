@@ -19,19 +19,25 @@ import com.cleanappsample.di.modules.ActionBarModule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import flow.StateParceler;
+import io.techery.janet.HttpActionService;
+import io.techery.janet.Janet;
+import io.techery.janet.gson.GsonConverter;
+import io.techery.janet.okhttp3.OkClient;
 import io.techery.presenta.addition.flow.util.GsonParceler;
-import io.techery.presenta.di.ApplicationScope;
 
 /**
  * Defines app-wide singletons.
  */
 @Module(includes = ActionBarModule.class)
 public class RootModule {
+
     @Provides
-    @ApplicationScope
     Gson provideGson() {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapterFactory(new AutoValueAdapterFactory());
@@ -40,8 +46,13 @@ public class RootModule {
     }
 
     @Provides
-    @ApplicationScope
     StateParceler provideParcel(Gson gson) {
         return new GsonParceler(gson);
     }
+
+    @Provides
+    UsersManager provideUsersManager() {
+        return new UsersManager();
+    }
+
 }

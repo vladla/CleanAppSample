@@ -52,8 +52,6 @@ dependencies {
     compile presentationDependencies.rxJava
     compile presentationDependencies.rxAndroid
     provided presentationDependencies.javaxAnnotation
-    apt presentationDependencies.daggerCompiler
-    compile presentationDependencies.dagger
     compile presentationDependencies.flow
     compile presentationDependencies.presenta
     compile presentationDependencies.presentaAdditions
