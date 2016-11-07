@@ -16,6 +16,7 @@
 package com.cleanappsample.di;
 
 import com.cleanappsample.di.modules.ActionBarModule;
+import com.cleanappsample.net.AutoValueAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

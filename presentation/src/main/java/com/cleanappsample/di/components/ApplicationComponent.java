@@ -15,7 +15,10 @@ import io.techery.presenta.di.ApplicationScope;
 @Component(modules = {ApplicationModule.class, RootModule.class, UtilsModule.class})
 public interface ApplicationComponent {
     void inject(CleanSampleApplication application);
+
     void inject(MainActivity mainActivity);
+
     ActionBarOwner actionBarOwner();
+
     UsersManager usersManager();
 }

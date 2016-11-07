@@ -1,4 +1,4 @@
-package com.cleanappsample.di;
+package com.cleanappsample.net;
 
 
 import java.lang.annotation.Retention;
