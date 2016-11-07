@@ -6,6 +6,7 @@ import com.cleanappsample.MainActivity;
 import com.cleanappsample.R;
 import com.cleanappsample.flow.HasParent;
 import com.cleanappsample.model.User;
+import com.cleanappsample.model.UserModel;
 import com.cleanappsample.view.FriendView;
 
 import javax.inject.Inject;
@@ -23,9 +24,9 @@ import mortar.ViewPresenter;
 
 @Layout(R.layout.friend_view) @WithComponent(FriendScreen.Component.class)
 public class FriendScreen extends Path implements HasParent {
-    private final User user;
+    private final UserModel user;
 
-    public FriendScreen(User user) {
+    public FriendScreen(UserModel user) {
         this.user = user;
     }
 
@@ -36,10 +37,10 @@ public class FriendScreen extends Path implements HasParent {
 
     @ScreenScope(FriendScreen.class)
     public static class Presenter extends ViewPresenter<FriendView> {
-        private final User friend;
+        private final UserModel friend;
 
         @Inject
-        public Presenter(User user) {
+        public Presenter(UserModel user) {
             this.friend = user;
         }
 
@@ -47,7 +48,7 @@ public class FriendScreen extends Path implements HasParent {
         protected void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
             if (!hasView()) return;
-            getView().setFriends(friend.name);
+            getView().setFriends("Followers "+ friend.getFollowers());
         }
     }
 
@@ -59,7 +60,7 @@ public class FriendScreen extends Path implements HasParent {
 
     @dagger.Module
     public class Module {
-        @Provides User provideFriend() {
+        @Provides UserModel provideFriend() {
             return user;
         }
     }

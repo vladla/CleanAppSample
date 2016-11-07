@@ -19,16 +19,13 @@ import android.os.Bundle;
 
 import com.cleanappsample.MainActivity;
 import com.cleanappsample.R;
+import com.cleanappsample.mapper.UserDataMapper;
 import com.cleanappsample.actions.UsersAction;
 import com.cleanappsample.di.UsersManager;
-import com.cleanappsample.di.ScreenComponent;
-import com.cleanappsample.di.components.ApplicationComponent;
-import com.cleanappsample.net.NetworkModule;
+import com.cleanappsample.model.UserModel;
 import com.cleanappsample.entity.UserEntity;
-import com.cleanappsample.model.User;
 import com.cleanappsample.view.FriendListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -47,16 +44,14 @@ public class FriendListScreen extends Path {
 
     @ScreenScope(FriendListScreen.class)
     public static class Presenter extends ViewPresenter<FriendListView> {
-        List<User> friends;
+        List<UserModel> friends;
         @Inject
         UsersManager usersManager;
+        @Inject
+        UserDataMapper userMapper;
 
         @Inject
         public Presenter() {
-            friends = new ArrayList<>();
-            for (int i = 0; i < 100; i++) {
-                friends.add(new User(i, "User " + i));
-            }
         }
 
         @Override
@@ -74,12 +69,14 @@ public class FriendListScreen extends Path {
             usersManager.users();
         }
 
-        private void processUsers(List<UserEntity> friends) {
+        private void processUsers(List<UserEntity> users) {
             if (!hasView()) return;
-            getView().showFriends(this.friends);
+            friends = userMapper.convert(users);
+            getView().showFriends(friends);
         }
 
         public void onFriendSelected(int position) {
+            if(friends.isEmpty()) return;
             Flow.get(getView()).set(new FriendScreen(friends.get(position)));
         }
     }

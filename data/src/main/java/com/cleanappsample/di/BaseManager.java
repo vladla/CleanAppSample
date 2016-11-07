@@ -1,6 +1,8 @@
 package com.cleanappsample.di;
 
+import com.cleanappsample.net.AutoValueAdapterFactory;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import io.techery.janet.HttpActionService;
 import io.techery.janet.Janet;
@@ -18,10 +20,16 @@ class BaseManager {
     Janet provideJanet() {
         if (janet == null) {
             janet = new Janet.Builder()
-                    .addService(new HttpActionService(BASE_URL, new OkClient(), new GsonConverter(new Gson())))
+                    .addService(new HttpActionService(BASE_URL, new OkClient(), new GsonConverter(provideGson())))
                     .build();
         }
         return janet;
+    }
+
+    private Gson provideGson(){
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapterFactory(new AutoValueAdapterFactory());
+        return builder.create();
     }
 
 }

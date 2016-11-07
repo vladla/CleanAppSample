@@ -23,7 +23,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.cleanappsample.model.User;
+
+import com.cleanappsample.model.UserModel;
 import com.cleanappsample.screen.FriendListScreen;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public class FriendListView extends ListView {
         presenter.dropView(this);
     }
 
-    public void showFriends(List<User> friends) {
+    public void showFriends(List<UserModel> friends) {
         Adapter adapter = new Adapter(getContext(), friends);
 
         setAdapter(adapter);
@@ -65,8 +66,8 @@ public class FriendListView extends ListView {
         });
     }
 
-    private static class Adapter extends ArrayAdapter<User> {
-        public Adapter(Context context, List<User> objects) {
+    private static class Adapter extends ArrayAdapter<UserModel> {
+        public Adapter(Context context, List<UserModel> objects) {
             super(context, android.R.layout.simple_list_item_1, objects);
         }
     }
