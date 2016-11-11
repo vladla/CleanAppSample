@@ -15,6 +15,12 @@
  */
 package com.cleanappsample.di;
 
+import android.content.Context;
+
+import com.cleanappsample.cache.PreferenceHelper;
+import com.cleanappsample.cache.PreferenceManager;
+import com.cleanappsample.cache.UserCache;
+import com.cleanappsample.cache.UserCacheImpl;
 import com.cleanappsample.di.modules.ActionBarModule;
 import com.cleanappsample.net.AutoValueAdapterFactory;
 import com.google.gson.Gson;
@@ -54,6 +60,11 @@ public class RootModule {
     @Provides
     UsersManager provideUsersManager() {
         return new UsersManager();
+    }
+
+    @Provides
+    UserCache provideUserCache(PreferenceManager preferenceManager, Context context){
+        return new UserCacheImpl(preferenceManager, context);
     }
 
 }
