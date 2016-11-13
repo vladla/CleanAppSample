@@ -24,48 +24,51 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-import com.cleanappsample.model.User;
+import com.cleanappsample.model.UserModel;
 import com.cleanappsample.screen.FriendListScreen;
 
 import java.util.List;
 
-import io.techery.presenta.mortar.PresenterService;
+import javax.inject.Inject;
+
+import io.techery.presenta.mortar.DaggerService;
 
 public class FriendListView extends ListView {
-  FriendListScreen.Presenter presenter;
+    @Inject
+    FriendListScreen.Presenter presenter;
 
-  public FriendListView(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    presenter = PresenterService.getPresenter(context);
-  }
-
-  @Override
-  protected void onAttachedToWindow() {
-    super.onAttachedToWindow();
-    presenter.takeView(this);
-  }
-
-  @Override
-  protected void onDetachedFromWindow() {
-    super.onDetachedFromWindow();
-    presenter.dropView(this);
-  }
-
-  public void showFriends(List<User> friends) {
-    Adapter adapter = new Adapter(getContext(), friends);
-
-    setAdapter(adapter);
-    setOnItemClickListener(new OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        presenter.onFriendSelected(position);
-      }
-    });
-  }
-
-  private static class Adapter extends ArrayAdapter<User> {
-    public Adapter(Context context, List<User> objects) {
-      super(context, android.R.layout.simple_list_item_1, objects);
+    public FriendListView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        DaggerService.<FriendListScreen.Component>getDaggerComponent(context).inject(this);
     }
-  }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        presenter.takeView(this);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        presenter.dropView(this);
+    }
+
+    public void showFriends(List<UserModel> friends) {
+        Adapter adapter = new Adapter(getContext(), friends);
+
+        setAdapter(adapter);
+        setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                presenter.onFriendSelected(position);
+            }
+        });
+    }
+
+    private static class Adapter extends ArrayAdapter<UserModel> {
+        public Adapter(Context context, List<UserModel> objects) {
+            super(context, android.R.layout.simple_list_item_1, objects);
+        }
+    }
 }

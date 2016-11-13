@@ -17,48 +17,74 @@ package com.cleanappsample.screen;
 
 import android.os.Bundle;
 
+import com.cleanappsample.MainActivity;
 import com.cleanappsample.R;
-import com.cleanappsample.flow.HasParent;
-import com.cleanappsample.model.User;
+import com.cleanappsample.mapper.UserDataMapper;
+import com.cleanappsample.actions.UsersAction;
+import com.cleanappsample.di.UsersManager;
+import com.cleanappsample.model.UserModel;
+import com.cleanappsample.entity.UserEntity;
 import com.cleanappsample.view.FriendListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import flow.Flow;
 import flow.path.Path;
+import io.techery.janet.helper.ActionStateSubscriber;
 import io.techery.presenta.addition.flow.path.Layout;
-import io.techery.presenta.mortarscreen.presenter.InjectablePresenter;
-import io.techery.presenta.mortarscreen.presenter.WithPresenter;
+import io.techery.presenta.di.ScreenScope;
+import io.techery.presenta.mortarscreen.component.WithComponent;
+import mortar.ViewPresenter;
+import rx.android.schedulers.AndroidSchedulers;
 
-@Layout(R.layout.friend_list_view) @WithPresenter(FriendListScreen.Presenter.class)
-public class FriendListScreen extends Path implements HasParent {
+@Layout(R.layout.friend_list_view) @WithComponent(FriendListScreen.Component.class)
+public class FriendListScreen extends Path {
 
-  @Override
-  public Object getParent() {
-    return null;
-  }
+    @ScreenScope(FriendListScreen.class)
+    public static class Presenter extends ViewPresenter<FriendListView> {
+        List<UserModel> friends;
+        @Inject
+        UsersManager usersManager;
+        @Inject
+        UserDataMapper userMapper;
 
-  public static class Presenter extends InjectablePresenter<FriendListView> {
-    List<User> friends;
-    public Presenter(PresenterInjector injector) {
-      super(injector);
-      friends = new ArrayList<>();
-      for (int i = 0; i < 100; i++) {
-        friends.add(new User(i, "User " + i));
-      }
+        @Inject
+        public Presenter() {
+        }
+
+        @Override
+        public void onLoad(Bundle savedInstanceState) {
+            super.onLoad(savedInstanceState);
+            usersManager.provideUsersPipe()
+                    .observe()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new ActionStateSubscriber<UsersAction>()
+                    .onStart(action -> System.out.println("Request is being sent " + action))
+                    .onProgress((action, progress) -> System.out.println("Request in progress: " + progress))
+                    .onSuccess(action -> processUsers(action.getResponse()))
+                    .onFail((action, throwable) -> System.err.println("Request failed " + throwable))
+            );
+            usersManager.users();
+        }
+
+        private void processUsers(List<UserEntity> users) {
+            if (!hasView()) return;
+            friends = userMapper.convert(users);
+            getView().showFriends(friends);
+        }
+
+        public void onFriendSelected(int position) {
+            if(friends.isEmpty()) return;
+            Flow.get(getView()).set(new FriendScreen(friends.get(position)));
+        }
     }
 
-    @Override
-    public void onLoad(Bundle savedInstanceState) {
-      super.onLoad(savedInstanceState);
-      if (!hasView()) return;
-      getView().showFriends(friends);
+    @ScreenScope(FriendListScreen.class)
+    @dagger.Component(dependencies = MainActivity.Component.class)
+    public interface Component {
+        void inject(FriendListView friendListView);
     }
-
-    public void onFriendSelected(int position) {
-      //TODO: complete
-//      Flow.get(getView()).set(new FriendScreen(position));
-    }
-  }
 
 }

@@ -1,7 +1,6 @@
-package com.cleanappsample.di;
+package com.cleanappsample.net;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -33,6 +32,12 @@ public class NetworkModule {
     String provideBaseUrl() {
         return "http://www.android10.org/myapi"; // ToDo replace with base url
     }
+
+    @Provides
+    OkClient provideOkClient() {
+        return new OkClient();
+    }
+
 
     @Provides
     @Singleton

@@ -3,7 +3,7 @@ package com.cleanappsample.entity;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
-import com.cleanappsample.di.AutoGson;
+import com.cleanappsample.net.AutoGson;
 import com.google.auto.value.AutoValue;
 import com.google.gson.annotations.SerializedName;
 
