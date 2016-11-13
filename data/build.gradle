@@ -57,6 +57,7 @@ android {
         compile dataDependencies.autovalueParcelAdapter
         compile dataDependencies.snappyDB
         compile dataDependencies.kryo
+        compile dataDependencies.stetho
         testCompile testDependencies.junit
     }
 }

@@ -37,7 +37,7 @@ public class UserCacheImpl extends BaseCache implements UserCache {
     @Override
     public Observable<UserEntity> get(final int userId) {
         return Observable.create(subscriber -> {
-            UserEntity userEntity = retrieveObject(USER_KEY, UserEntity.class);
+            UserEntity userEntity = retrieveObject(USER_KEY + userId, UserEntity.class);
             if(userEntity != null){
                 subscriber.onNext(userEntity);
                 subscriber.onCompleted();

@@ -17,7 +17,6 @@ package com.cleanappsample.di;
 
 import android.content.Context;
 
-import com.cleanappsample.cache.PreferenceHelper;
 import com.cleanappsample.cache.PreferenceManager;
 import com.cleanappsample.cache.UserCache;
 import com.cleanappsample.cache.UserCacheImpl;
@@ -26,16 +25,9 @@ import com.cleanappsample.net.AutoValueAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import flow.StateParceler;
-import io.techery.janet.HttpActionService;
-import io.techery.janet.Janet;
-import io.techery.janet.gson.GsonConverter;
-import io.techery.janet.okhttp3.OkClient;
 import io.techery.presenta.addition.flow.util.GsonParceler;
 
 /**
@@ -63,7 +55,7 @@ public class RootModule {
     }
 
     @Provides
-    UserCache provideUserCache(PreferenceManager preferenceManager, Context context){
+    UserCache provideUserCache(PreferenceManager preferenceManager, Context context) {
         return new UserCacheImpl(preferenceManager, context);
     }
 

@@ -16,6 +16,7 @@
 package com.cleanappsample.screen;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.cleanappsample.MainActivity;
 import com.cleanappsample.R;
@@ -39,6 +40,7 @@ import io.techery.presenta.di.ScreenScope;
 import io.techery.presenta.mortarscreen.component.WithComponent;
 import mortar.ViewPresenter;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 @Layout(R.layout.friend_list_view) @WithComponent(FriendListScreen.Component.class)
 public class FriendListScreen extends Path {
@@ -75,6 +77,9 @@ public class FriendListScreen extends Path {
         private void processUsers(List<UserEntity> users) {
             if (!hasView()) return;
             userCache.put(users);
+//            userCache.get(1).subscribe(userEntity -> {
+//                Toast.makeText(getView().getContext(), "Followers = " + userEntity.followers(), Toast.LENGTH_SHORT).show();
+//            });
             friends = userMapper.convert(users);
             getView().showFriends(friends);
         }

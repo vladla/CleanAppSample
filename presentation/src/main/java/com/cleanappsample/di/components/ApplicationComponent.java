@@ -7,10 +7,6 @@ import com.cleanappsample.di.RootModule;
 import com.cleanappsample.di.UsersManager;
 import com.cleanappsample.di.modules.ApplicationModule;
 
-import com.cleanappsample.di.NetworkModule;
-
-import javax.inject.Singleton;
-
 import com.cleanappsample.di.modules.UtilsModule;
 
 import dagger.Component;
@@ -23,8 +19,6 @@ public interface ApplicationComponent {
     void inject(CleanSampleApplication application);
 
     void inject(MainActivity mainActivity);
-
-    void inject(UserCacheImpl userCache);
 
     ActionBarOwner actionBarOwner();
 

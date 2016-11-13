@@ -3,9 +3,9 @@ package com.cleanappsample;
 import android.app.Application;
 
 import com.cleanappsample.di.components.ApplicationComponent;
-import com.cleanappsample.di.components.DaggerApplicationComponent;
 import com.cleanappsample.di.modules.ApplicationModule;
-import com.cleanappsample.di.NetworkModule;
+import com.facebook.stetho.Stetho;
+
 
 import io.techery.presenta.mortar.DaggerService;
 import mortar.MortarScope;
@@ -18,8 +18,11 @@ public class CleanSampleApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        component = DaggerService.createComponent(ApplicationComponent.class);
+        component = DaggerService.createComponent(ApplicationComponent.class, new ApplicationModule(this));
         component.inject(this);
+        if(BuildConfig.DEBUG){
+            Stetho.initializeWithDefaults(this);
+        }
     }
 
 

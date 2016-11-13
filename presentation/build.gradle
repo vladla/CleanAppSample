@@ -71,4 +71,6 @@ dependencies {
     androidTestCompile presentationTestDependencies.dexmakerMockito
     androidTestCompile presentationTestDependencies.espresso
     androidTestCompile presentationTestDependencies.testingSupportLib
+    androidTestCompile presentationTestDependencies.snappyDB
+    androidTestCompile presentationTestDependencies.kryo
 }
