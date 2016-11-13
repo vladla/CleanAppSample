@@ -19,6 +19,7 @@ import android.os.Bundle;
 
 import com.cleanappsample.MainActivity;
 import com.cleanappsample.R;
+import com.cleanappsample.cache.UserCacheImpl;
 import com.cleanappsample.mapper.UserDataMapper;
 import com.cleanappsample.actions.UsersAction;
 import com.cleanappsample.di.UsersManager;
@@ -49,6 +50,8 @@ public class FriendListScreen extends Path {
         UsersManager usersManager;
         @Inject
         UserDataMapper userMapper;
+        @Inject
+        UserCacheImpl userCache;
 
         @Inject
         public Presenter() {
@@ -71,6 +74,7 @@ public class FriendListScreen extends Path {
 
         private void processUsers(List<UserEntity> users) {
             if (!hasView()) return;
+            userCache.put(users);
             friends = userMapper.convert(users);
             getView().showFriends(friends);
         }

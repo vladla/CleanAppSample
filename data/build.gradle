@@ -55,6 +55,8 @@ android {
         apt dataDependencies.autoValue
         apt dataDependencies.autoValueParcel
         compile dataDependencies.autovalueParcelAdapter
+        compile dataDependencies.snappyDB
+        compile dataDependencies.kryo
         testCompile testDependencies.junit
     }
 }

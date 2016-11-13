@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.techery.presenta.di.ApplicationScope;
 
 @Module
 public class ApplicationModule {
@@ -21,14 +22,14 @@ public class ApplicationModule {
     }
 
     @Provides
-    @Singleton
+    @ApplicationScope
     public Context provideAppContext(){
         return this.application;
     }
 
     @Provides
-    @Singleton
-    PreferenceHelper providePreferenceHelper(Context context){
+    @ApplicationScope
+    PreferenceManager providePreferenceHelper(Context context){
         return new PreferenceManager(context);
     }
 }

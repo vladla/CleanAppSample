@@ -34,8 +34,10 @@ ext {
   immutablesGsonVersion = '2.3.2'
   stethoVersion = '1.4.1'
   modelMapperVersion = '0.7.5'
-    autovalueVersion = '1.3'
-    autovalueParcelVersion = '0.2.5'
+  autovalueVersion = '1.3'
+  autovalueParcelVersion = '0.2.5'
+  snappyDBVersion = '0.4.0'
+  kryoVersion = '2.24.0'
 
 
     //Testing
@@ -124,7 +126,9 @@ ext {
             modelMapperVersion     : "${modelMapperVersion}",
             autoValue              : "com.google.auto.value:auto-value:${autovalueVersion}",
             autoValueParcel     : "com.ryanharter.auto.value:auto-value-parcel:${autovalueParcelVersion}",
-            autovalueParcelAdapter : "com.ryanharter.auto.value:auto-value-parcel-adapter:${autovalueParcelVersion}"
+            autovalueParcelAdapter : "com.ryanharter.auto.value:auto-value-parcel-adapter:${autovalueParcelVersion}",
+            snappyDB                : "com.snappydb:snappydb-lib:${snappyDBVersion}",
+            kryo                    : "com.esotericsoftware.kryo:kryo:${kryoVersion}"
     ]
 
     dataTestDependencies = [
