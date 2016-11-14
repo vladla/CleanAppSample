@@ -25,7 +25,6 @@ public class CleanSampleApplication extends Application {
         }
     }
 
-
     @Override
     public Object getSystemService(String name) {
         if (rootScope == null) {

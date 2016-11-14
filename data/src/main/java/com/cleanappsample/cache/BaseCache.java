@@ -2,6 +2,7 @@ package com.cleanappsample.cache;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.snappydb.DB;
 import com.snappydb.DBFactory;
 import com.snappydb.SnappydbException;
@@ -12,39 +13,19 @@ import java.util.List;
 public class BaseCache {
 
     private Context context;
+    private Gson gson;
 
-    public BaseCache(Context context) {
+    public BaseCache(Context context, Gson gson) {
         this.context = context;
+        this.gson = gson;
     }
 
     protected <T> T retrieveObject(String key, Class<T> clazz){
         try {
             DB db = DBFactory.open(context);
-            T result = db.getObject(key, clazz);
+            String json = db.get(key);
             db.close();
-            return result;
-        } catch (SnappydbException e) {
-            throw new UnsupportedOperationException(e.getLocalizedMessage());
-        }
-    }
-
-    protected <T extends Serializable> T retrieveSerializable(String key, Class<T> clazz){
-        try {
-            DB db = DBFactory.open(context);
-            T result = db.get(key, clazz);
-            db.close();
-            return result;
-        } catch (SnappydbException e) {
-            throw new UnsupportedOperationException(e.getLocalizedMessage());
-        }
-    }
-
-    protected <T> T[] retrieveListObject(String key, Class<T> clazz){
-        try {
-            DB db = DBFactory.open(context);
-            T [] result = db.getObjectArray(key, clazz);
-            db.close();
-            return result;
+            return gson.fromJson(json, clazz);
         } catch (SnappydbException e) {
             throw new UnsupportedOperationException(e.getLocalizedMessage());
         }
@@ -53,17 +34,8 @@ public class BaseCache {
     protected <T> void insert(String key, T object){
         try {
             DB db = DBFactory.open(context);
-            db.put(key, object);
-            db.close();
-        } catch (SnappydbException e) {
-            throw new UnsupportedOperationException(e.getLocalizedMessage());
-        }
-    }
-
-    protected <T> void insert(String key, T[] object){
-        try {
-            DB db = DBFactory.open(context);
-            db.put(key, object);
+            String value = gson.toJson(object);
+            db.put(key, value);
             db.close();
         } catch (SnappydbException e) {
             throw new UnsupportedOperationException(e.getLocalizedMessage());

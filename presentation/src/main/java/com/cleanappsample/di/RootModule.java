@@ -55,8 +55,8 @@ public class RootModule {
     }
 
     @Provides
-    UserCache provideUserCache(PreferenceManager preferenceManager, Context context) {
-        return new UserCacheImpl(preferenceManager, context);
+    UserCache provideUserCache(PreferenceManager preferenceManager, Context context, Gson gson) {
+        return new UserCacheImpl(preferenceManager, context, gson);
     }
 
 }

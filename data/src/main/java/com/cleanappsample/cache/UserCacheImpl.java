@@ -1,24 +1,15 @@
 package com.cleanappsample.cache;
 
-import android.app.Application;
 import android.content.Context;
 
 import com.cleanappsample.entity.UserEntity;
-import com.snappydb.DB;
-import com.snappydb.DBFactory;
-import com.snappydb.SnappydbException;
+import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Observable;
-
-/**
- * Created by Anton Khorunzhyi on 11/9/2016.
- */
 
 public class UserCacheImpl extends BaseCache implements UserCache {
 
@@ -29,8 +20,8 @@ public class UserCacheImpl extends BaseCache implements UserCache {
     private PreferenceManager preferenceManager;
 
     @Inject
-    public UserCacheImpl(PreferenceManager preferenceHelper, Context context) {
-        super(context);
+    public UserCacheImpl(PreferenceManager preferenceHelper, Context context, Gson gson) {
+        super(context, gson);
         this.preferenceManager = preferenceHelper;
     }
 
@@ -38,7 +29,7 @@ public class UserCacheImpl extends BaseCache implements UserCache {
     public Observable<UserEntity> get(final int userId) {
         return Observable.create(subscriber -> {
             UserEntity userEntity = retrieveObject(USER_KEY + userId, UserEntity.class);
-            if(userEntity != null){
+            if (userEntity != null) {
                 subscriber.onNext(userEntity);
                 subscriber.onCompleted();
             } else {
@@ -49,14 +40,14 @@ public class UserCacheImpl extends BaseCache implements UserCache {
 
     @Override
     public void put(UserEntity userEntity) {
-        if(userEntity != null){
+        if (userEntity != null) {
             insert(USER_KEY + userEntity.id(), userEntity);
         }
     }
 
     @Override
     public void put(List<UserEntity> userEntities) {
-        if(userEntities != null && !userEntities.isEmpty()){
+        if (userEntities != null && !userEntities.isEmpty()) {
             for (UserEntity userEntity : userEntities) {
                 insert(USER_KEY + userEntity.id(), userEntity);
             }

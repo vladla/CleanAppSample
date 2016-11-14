@@ -60,12 +60,6 @@ dependencies {
     apt presentationDependencies.autoValueParcel
     compile presentationDependencies.autovalueParcelAdapter
 
-    compile presentationDependencies.janet
-    compile presentationDependencies.janetService
-    apt presentationDependencies.janetServiceCompiler
-    compile presentationDependencies.janetOkHttp
-    compile presentationDependencies.janetGsonConvertor
-
     androidTestCompile presentationTestDependencies.mockito
     androidTestCompile presentationTestDependencies.dexmaker
     androidTestCompile presentationTestDependencies.dexmakerMockito
