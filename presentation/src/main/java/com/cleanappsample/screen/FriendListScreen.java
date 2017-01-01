@@ -23,6 +23,7 @@ import com.cleanappsample.UIThread;
 import com.cleanappsample.cache.UserCacheImpl;
 import com.cleanappsample.di.UserModule;
 import com.cleanappsample.domain.ActionWrapper;
+import com.cleanappsample.domain.User;
 import com.cleanappsample.domain.executor.PostExecutionThread;
 import com.cleanappsample.domain.executor.ThreadExecutor;
 import com.cleanappsample.domain.interactor.GetUserList;
@@ -35,6 +36,7 @@ import com.cleanappsample.model.UserModel;
 import com.cleanappsample.repository.UserDataRepository;
 import com.cleanappsample.view.FriendListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -68,7 +70,7 @@ public class FriendListScreen extends Path {
         @Override
         public void onLoad(Bundle savedInstanceState) {
             super.onLoad(savedInstanceState);
-            getUserListUserCase.execute(new Subscriber<ActionWrapper<List<UserEntity>>>() {
+            getUserListUserCase.execute(new Subscriber<ActionWrapper<List<User>>>() {
                 @Override
                 public void onCompleted() {
                 }
@@ -79,19 +81,20 @@ public class FriendListScreen extends Path {
                 }
 
                 @Override
-                public void onNext(ActionWrapper<List<UserEntity>> o) {
+                public void onNext(ActionWrapper<List<User>> o) {
                     processUsers(o.data);
                 }
             });
         }
 
-        private void processUsers(List<UserEntity> users) {
+        private void processUsers(List<User> users) {
             if (!hasView()) return;
-            userCache.put(users);
+            List<UserEntity> presentationUsers = userMapper.convertDomainUsers(users);
+            userCache.put(presentationUsers);
 //            userCache.get(1).subscribe(userEntity -> {
 //                Toast.makeText(getView().getContext(), "Followers = " + userEntity.followers(), Toast.LENGTH_SHORT).show();
 //            });
-            friends = userMapper.convert(users);
+            friends = userMapper.convert(presentationUsers);
             getView().showFriends(friends);
         }
 

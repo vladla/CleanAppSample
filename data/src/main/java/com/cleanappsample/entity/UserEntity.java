@@ -26,4 +26,21 @@ public abstract class UserEntity implements Parcelable{
     public abstract int followers();
     @Nullable
     public abstract String email();
+
+    public static Builder builder() {
+        return new AutoValue_UserEntity.Builder();
+    }
+
+    @AutoValue.Builder
+    public abstract static class Builder {
+        public abstract Builder id(int id);
+        public abstract Builder coverUrl(String coverUrl);
+        public abstract Builder fullName(String fullName);
+        public abstract Builder description(String description);
+        public abstract Builder followers(int followers);
+        public abstract Builder email(String email);
+        public abstract UserEntity build();
+    }
+
+
 }

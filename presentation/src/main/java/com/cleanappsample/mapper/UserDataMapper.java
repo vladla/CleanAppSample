@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
+
 /**
  * Created by Anton Khorunzhyi on 11/7/2016.
  */
@@ -19,7 +21,7 @@ public class UserDataMapper {
     public UserDataMapper() {
     }
 
-    public UserModel convert(UserEntity userEntity){
+    private UserModel convert(UserEntity userEntity){
         UserModel user = UserModel.builder()
                 .userId(userEntity.id())
                 .coverUrl(userEntity.coverUrl())
@@ -29,6 +31,17 @@ public class UserDataMapper {
                 .fullName(userEntity.fullName())
                 .build();
         return user;
+    }
+
+    private UserEntity convert(User user) {
+        return UserEntity.builder()
+                .id(user.getUserId())
+                .coverUrl(user.getCoverUrl())
+                .description(user.getDescription())
+                .email(user.getEmail())
+                .followers(user.getFollowers())
+                .fullName(user.getFullName())
+                .build();
     }
 
     public List<UserModel> convert(List<UserEntity> userEntities){
@@ -43,4 +56,16 @@ public class UserDataMapper {
         }
         return userList;
     }
+
+    public List<UserEntity> convertDomainUsers(List<User> users) {
+        List<UserEntity> userEntities = new ArrayList<>();
+        for (User user : users) {
+            UserEntity userEntity = convert(user);
+            if (userEntity != null) {
+                userEntities.add(userEntity);
+            }
+        }
+        return userEntities;
+    }
+
 }

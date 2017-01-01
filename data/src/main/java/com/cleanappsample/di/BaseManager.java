@@ -4,6 +4,7 @@ import com.cleanappsample.data.BuildConfig;
 import com.cleanappsample.net.AutoValueAdapterFactory;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -41,6 +42,7 @@ class BaseManager {
 
     private Gson provideGson(){
         GsonBuilder builder = new GsonBuilder();
+        builder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
         builder.registerTypeAdapterFactory(new AutoValueAdapterFactory());
         return builder.create();
     }
